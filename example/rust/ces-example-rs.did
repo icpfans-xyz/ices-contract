@@ -1,0 +1,5 @@
+service : {
+     "login": (event_key : text) -> ();
+     "set_ces_canister": (canister_id : text) -> ();
+     "get_ces_canister": () -> (text);
+}

@@ -1,0 +1,31 @@
+{
+  "canisters": {
+    "ices": {
+      "main": "src/main.mo",
+      "type": "motoko"
+    },
+    "ices-example-motoko": {
+      "main": "example/motoko/src/main.mo",
+      "type": "motoko"
+    },
+    "ices-example-rs": {
+      "build": "cargo build --target wasm32-unknown-unknown --manifest-path example/rust/Cargo.toml --package ces-example-rs --release",
+      "candid": "example/rust/ces-example-rs.did",
+      "wasm": "example/rust/target/wasm32-unknown-unknown/release/ces_example_rs.wasm",
+      "type": "custom"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "networks": {
+    "local": {
+      "bind": "127.0.0.1:8000",
+      "type": "ephemeral"
+    }
+  },
+  "version": 1
+}
