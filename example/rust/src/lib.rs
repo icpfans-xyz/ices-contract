@@ -2,13 +2,13 @@ use ic_cdk::export::Principal;
 
 use ic_cdk_macros::*;
 
-static mut CESCANISTER: &str = "ark2z-fiaaa-aaaah-aa4ta-cai";
+static mut CESCANISTER: &str = "ydetr-mqaaa-aaaah-aa6lq-cai";
 
 
 #[update]
 async fn register() {
     ic_cdk::println!("Rust register");
-    let project_id = String::from("RS_Project");
+    let project_id = String::from("your project id or name");
     let this_canister: Principal =
             Principal::from_text("ryjl3-tyaaa-aaaaa-aaaba-cai").unwrap();
     unsafe {

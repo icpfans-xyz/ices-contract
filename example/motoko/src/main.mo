@@ -12,7 +12,7 @@ actor CESExample  {
     };
 
 
-    private var icasActor : ICPCES = actor("ark2z-fiaaa-aaaah-aa4ta-cai");
+    private var icasActor : ICPCES = actor("ydetr-mqaaa-aaaah-aa6lq-cai");
 
 
     public func setICESCanister(canisterId : Text) : async Bool {
@@ -20,14 +20,14 @@ actor CESExample  {
         true;
     };
 
-    // User data example
+    // Register the current Canister to ICES Main (Router) Canister
     public shared({caller}) func register() : async Bool {
-        // TODO Your business
-        let projectId = "MO_Project";
+        // TODO Your Project ID or Name （customize）
+        let projectId = "your project id or name";
         let thisCanister = Principal.fromActor(CESExample);
         let result = await icasActor.register(projectId, thisCanister);
         switch result {
-            case(#ok(msg)) Debug.print("emit success MSG:" # msg);
+            case(#ok(msg)) Debug.print("Register success :" # msg);
             case(#err(errmsg)) Debug.print("emit fail: " # errmsg);
         };
         true;
