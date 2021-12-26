@@ -8,15 +8,16 @@ static mut CESCANISTER: &str = "ydetr-mqaaa-aaaah-aa6lq-cai";
 #[update]
 async fn register() {
     ic_cdk::println!("Rust register");
-    let project_id = String::from("your project id or name");
-    let this_canister: Principal =
-            Principal::from_text("ryjl3-tyaaa-aaaaa-aaaba-cai").unwrap();
+    
+    // let this_canister: Principal =
+    //         Principal::from_text("ryjl3-tyaaa-aaaaa-aaaba-cai").unwrap();
     unsafe {
+        let project_id = String::from("your project id or name");
         let canister_id: Principal =
             Principal::from_text(CESCANISTER).unwrap();
 
             let _call_result: Result<(), _> =
-            ic_cdk::api::call::call(canister_id, "register", (project_id, this_canister)).await;
+            ic_cdk::api::call::call(canister_id, "register", (project_id,)).await;
         match _call_result {
             Ok(_) => Ok(()),
             Err((code, msg)) => Err(ic_cdk::println!(

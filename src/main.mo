@@ -183,8 +183,8 @@ shared ({caller = owner}) actor class ICES() = this {
     };
 
     // Methods that needs to be called to register 
-    public shared({caller}) func register(projectId: Text, canisterId: Principal) : async Result.Result<Text, Text> {
-        switch (registerMap.get(canisterId)) {
+    public shared({caller}) func register(projectId: Text) : async Result.Result<Text, Text> {
+        switch (registerMap.get(caller)) {
             case (?project) {
                 #err(MSG_ALREADY_REGISTER);
             };
@@ -194,7 +194,7 @@ shared ({caller = owner}) actor class ICES() = this {
                     currentNum = 0;
                     approve = false;
                 };
-                registerMap.put(canisterId, project);
+                registerMap.put(caller, project);
                 #ok(MSG_SUCCESS_REGISTER);
             };
         };

@@ -7,7 +7,7 @@ import Result "mo:base/Result";
 actor CESExample  {
     
     type ICPCES = actor {
-        register : shared (projectId: Text, canisterId: Principal) -> async Result.Result<Text, Text>;
+        register : shared (projectId: Text) -> async Result.Result<Text, Text>;
         emit : shared (eventKey: Text, eventValue: [Text]) -> async Result.Result<Nat, Text>;
     };
 
@@ -24,8 +24,7 @@ actor CESExample  {
     public shared({caller}) func register() : async Bool {
         // TODO Your Project ID or Name （customize）
         let projectId = "your project id or name";
-        let thisCanister = Principal.fromActor(CESExample);
-        let result = await icasActor.register(projectId, thisCanister);
+        let result = await icasActor.register(projectId);
         switch result {
             case(#ok(msg)) Debug.print("Register success :" # msg);
             case(#err(errmsg)) Debug.print("emit fail: " # errmsg);
