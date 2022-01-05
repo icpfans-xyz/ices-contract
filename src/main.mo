@@ -33,6 +33,8 @@ shared ({caller = owner}) actor class ICES() = this {
     private let ic : IC.Self = actor "aaaaa-aa";
 
     private var registerMap = HashMap.HashMap<Principal, Project>(1, Principal.equal, Principal.hash);
+    private stable var _registerEntries : [(Principal, Project)] = [];
+
     private stable var eventLogStorage : ?EventLogStorageActor = null;
     // EventLog Record
     private stable var eventLogs : [var EventLog] = [var];
@@ -393,6 +395,15 @@ shared ({caller = owner}) actor class ICES() = this {
             settings = settings;
         });
         return true;
+    };
+
+    system func preupgrade() {
+        _registerEntries := Iter.toArray(registerMap.entries());
+    };
+
+    system func postupgrade() {
+        registerMap := HashMap.fromIter<Principal, Project>(_registerEntries.vals(), 1, Principal.equal, Principal.hash);
+        _registerEntries := [];
     };
 
     
