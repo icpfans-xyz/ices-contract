@@ -1,14 +1,14 @@
 {
   "canisters": {
     "cas_call": {
-      "main": "src/main.mo",
+      "main": "src/mainsdk.mo",
       "type": "motoko"
     }
   },
   "defaults": {
     "build": {
       "args": "",
-      "packtool": ""
+      "packtool": "vessel sources"
     }
   },
   "networks": {
