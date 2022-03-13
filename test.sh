@@ -8,10 +8,11 @@
 
 # dfx start --clean --background --emulator
 dfx build --check
-dfx canister --no-wallet create --all
-dfx canister --no-wallet install ices -m reinstall 
-dfx canister --no-wallet install ices-example-motoko -m reinstall 
-dfx canister --no-wallet install ices-example-rs -m reinstall 
+dfx canister  create --all
+dfx canister  install ices  
+# dfx canister  install ices-example-motoko -m reinstall 
+dfx canister  install ices-example-motoko --argument '(opt "rrkah-fqaaa-aaaaa-aaaaq-cai")'
+dfx canister  install ices-example-rs 
 echo canister installed
 
 dfx identity use default
@@ -23,6 +24,8 @@ echo default principal = $DEFAULT_ID
 ICES=$(dfx canister id ices)
 echo ICES id: $ICES
 
+dfx canister  install ices-example-motoko --argument '(opt "'$ICES'")'
+
 MOTOKO_ID=$(dfx canister id ices-example-motoko)
 echo motoko example id: $MOTOKO_ID
 
@@ -33,9 +36,9 @@ echo rust example  id: $RUST_ID
 echo -----example motoko test------
 
 
-echo  setting motoko  ices canister = $( \
-        eval dfx canister --no-wallet call  $MOTOKO_ID setICESCanister "'(\"$ICES\")'"
-)
+# echo  setting motoko  ices canister = $( \
+#         eval dfx canister  call  $MOTOKO_ID setICESCanister "'(\"$ICES\")'"
+# )
 
 echo Register Motoko Project = $( \
     eval dfx canister call $MOTOKO_ID register
@@ -43,17 +46,17 @@ echo Register Motoko Project = $( \
 
 echo emit motoko example login
 
-eval dfx canister --no-wallet call  $MOTOKO_ID login "'(\"param1_motoko_login\", \"param1_motoko_login\")'"
+eval dfx canister  call  $MOTOKO_ID login "'(\"param1_motoko_login\", \"param1_motoko_login\")'"
 
 echo emit motoko example eventLogExample 
 
-eval dfx canister --no-wallet call  $MOTOKO_ID eventLogExample "'(\"param1_motoko\", \"param1_motoko\")'"
+eval dfx canister  call  $MOTOKO_ID eventLogExample "'(\"param1_motoko\", \"param1_motoko\")'"
 
 
 echo -----example rust test------
 
 echo  setting rust  ices canister = $( \
-        eval dfx canister --no-wallet call  $RUST_ID set_ces_canister "'(\"$ICES\")'"
+        eval dfx canister  call  $RUST_ID set_ces_canister "'(\"$ICES\")'"
 )
 
 echo Register Rust Project = $( \
@@ -62,7 +65,7 @@ echo Register Rust Project = $( \
 
 echo emit rust example login
 
-eval dfx canister --no-wallet call  $RUST_ID login "'(\"rust_rust_login\")'"
+eval dfx canister  call  $RUST_ID login "'(\"rust_rust_login\")'"
 
 echo -----ICES Query-----
 
@@ -80,22 +83,22 @@ echo getEventLogs = $( \
 
 
 # echo dfx setController = $( \
-#     eval dfx canister --no-wallet update-settings ICES --controller $ICES
+#     eval dfx canister  update-settings ICES --controller $ICES
 #     \
 # )
 
 # echo status = $( \
-#     eval dfx canister --no-wallet call $ICES getCanisterStatus
+#     eval dfx canister  call $ICES getCanisterStatus
 #     \
 # )
 
 # echo canister setController = $( \
-#     eval dfx canister --no-wallet call $ICES setController "'(principal \"$DEFAULT_ID\")'"
+#     eval dfx canister  call $ICES setController "'(principal \"$DEFAULT_ID\")'"
 #     \
 # )
 
 # echo status = $( \
-#     eval dfx canister --no-wallet call $ICES getCanisterStatus
+#     eval dfx canister  call $ICES getCanisterStatus
 #     \
 # )
 

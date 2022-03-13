@@ -185,14 +185,14 @@ shared ({caller = owner}) actor class ICES() = this {
     };
 
     // Methods that needs to be called to register 
-    public shared({caller}) func register(projectId: Text) : async Result.Result<Text, Text> {
+    public shared({caller}) func register() : async Result.Result<Text, Text> {
         switch (registerMap.get(caller)) {
             case (?project) {
                 #err(MSG_ALREADY_REGISTER);
             };
             case(_) {
                 let project : Project = {
-                    projectId = projectId;
+                    projectId = null;
                     currentNum = 0;
                     approve = false;
                 };

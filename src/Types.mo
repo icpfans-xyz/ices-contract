@@ -13,7 +13,7 @@ module {
 
     public type EventLog = {
         index           : Nat;
-        projectId      : Text;
+        projectId      : ?Text;
         caller          : Text; 
         eventKey       : Text; 
         eventValue     : [Text]; 
@@ -21,7 +21,7 @@ module {
     };
 
     public type  Project = {
-        projectId      : Text;
+        projectId      : ?Text;
         currentNum     : Nat;
         approve        : Bool;
     };

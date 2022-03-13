@@ -9,6 +9,7 @@
 
 # dfx temporary files
 .dfx/
+.vessel/
 
 # frontend code
 node_modules/
@@ -16,4 +17,3 @@ dist/
 
 # rust code
 target/
-icp123_rs/target/
