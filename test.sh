@@ -9,10 +9,10 @@
 # dfx start --clean --background --emulator
 dfx build --check
 dfx canister  create --all
-dfx canister  install ices  
+dfx canister  install ices  -m reinstall
 # dfx canister  install ices-example-motoko -m reinstall 
-dfx canister  install ices-example-motoko --argument '(opt "rrkah-fqaaa-aaaaa-aaaaq-cai")'
-dfx canister  install ices-example-rs 
+# dfx canister  install ices-example-motoko --argument '(opt "rrkah-fqaaa-aaaaa-aaaaq-cai")'
+dfx canister  install ices-example-rs -m reinstall
 echo canister installed
 
 dfx identity use default
@@ -24,7 +24,7 @@ echo default principal = $DEFAULT_ID
 ICES=$(dfx canister id ices)
 echo ICES id: $ICES
 
-dfx canister  install ices-example-motoko --argument '(opt "'$ICES'")'
+dfx canister  install ices-example-motoko --argument '(opt "'$ICES'")' -m reinstall
 
 MOTOKO_ID=$(dfx canister id ices-example-motoko)
 echo motoko example id: $MOTOKO_ID

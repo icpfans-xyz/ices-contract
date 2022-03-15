@@ -15,7 +15,8 @@ import Type "../Types";
 import HttpUtil "../utils/HttpUtil";
 import TextUtil "../utils/TextUtil";
 import EventUtil "../utils/EventUtil";
-import IC "../utils/ic"
+import IC "../utils/ic";
+import Buffer "mo:base/Buffer";
 
 shared ({caller = owner}) actor class EventStorage(_owner: Principal) = this {
     
@@ -29,6 +30,8 @@ shared ({caller = owner}) actor class EventStorage(_owner: Principal) = this {
 
     // EventLog Record
     private stable var eventLogs : [var EventLog] = [var];
+    // EventLog buffer
+    private let eventLogsBuffer = Buffer.Buffer<EventLog>(1);
 
     private let ic : IC.Self = actor "aaaaa-aa";
 
@@ -42,28 +45,36 @@ shared ({caller = owner}) actor class EventStorage(_owner: Principal) = this {
             eventValue  = item.eventValue;
             timestamp  = item.timestamp;
         };
-        eventLogs := Array.thaw(Array.append(Array.freeze(eventLogs), Array.make(newLog)));
+        eventLogsBuffer.add(newLog);
+        // eventLogs := Array.thaw(Array.append(Array.freeze(eventLogs), Array.make(newLog)));
         return true;
     };
     
 
     public query func getByIndex(index: Nat) : async ?EventLog {
+        eventLogs := eventLogsBuffer.toVarArray();
         let queryResult = Array.filter<EventLog>(Array.freeze(eventLogs), func x { index == x.index });
         let result : ?EventLog = if (queryResult.size() > 0) {
             ?queryResult[0];
         } else {
             null;
         };
+        eventLogs := [var];
         result;
     };
 
     public func getLastIndex() : async Nat {
+        eventLogs := eventLogsBuffer.toVarArray();
         let log = eventLogs[eventLogs.size() - 1];
+        eventLogs := [var];
         return log.index;
     };
 
     public func getPageByIndex(start: Nat, pageSize: Nat) : async [EventLog] {
-        return EventUtil.getPage(Array.freeze(eventLogs), start, pageSize);
+        eventLogs := eventLogsBuffer.toVarArray();
+        let result = EventUtil.getPage(Array.freeze(eventLogs), start, pageSize);
+        eventLogs := [var];
+        return result;
     };
 
 

@@ -10,7 +10,8 @@ import Cycles "mo:base/ExperimentalCycles";
 import Type "Types";
 import EventStorage "./storage/EventStorage";
 import EventUtil "./utils/EventUtil";
-import IC "./utils/ic"
+import IC "./utils/ic";
+import Buffer "mo:base/Buffer";
 
 
 shared ({caller = owner}) actor class ICES() = this {
@@ -38,7 +39,11 @@ shared ({caller = owner}) actor class ICES() = this {
     private stable var eventLogStorage : ?EventLogStorageActor = null;
     // EventLog Record
     private stable var eventLogs : [var EventLog] = [var];
+    // eventlog buffer
+    private let eventLogsBuffer = Buffer.Buffer<EventLog>(0);
     private stable var eventLogsTmp : [var EventLog] = [var];
+    // tmp buffer
+    private let eventLogsTmpBuffer = Buffer.Buffer<EventLog>(0);
     private stable var indexNonce : Nat = 0;
 
     private stable var autoNumber : Nat = 1000;
@@ -49,6 +54,8 @@ shared ({caller = owner}) actor class ICES() = this {
     private stable var maxStorageMemorySize : Nat = 7 * 1024 * 1024 * 1024;
 
     private stable var storageArr : [var StorageInfo] = [var];
+    // Storage buffer
+    private let storageBuffer = Buffer.Buffer<StorageInfo>(0);
 
     private let MSG_PERMISSION_DENIED = "Caller permission denied";
     private let MSG_ALREADY_REGISTER = "Canister is already registered";
@@ -149,7 +156,8 @@ shared ({caller = owner}) actor class ICES() = this {
             storageStatus = true; 
         };
         // put in array 
-        storageArr := Array.thaw(Array.append(Array.freeze(storageArr), Array.make(s)));
+        // storageArr := Array.thaw(Array.append(Array.freeze(storageArr), Array.make(s)));
+        storageBuffer.add(s);
         eventLogStorage := ?storage;
         storage;
     };
@@ -226,9 +234,11 @@ shared ({caller = owner}) actor class ICES() = this {
                     timestamp  = Time.now();
                 };
                 if (moveFlag == false) {
-                    eventLogs := Array.thaw(Array.append(Array.freeze(eventLogs), Array.make(newLog)));
+                    // eventLogs := Array.thaw(Array.append(Array.freeze(eventLogs), Array.make(newLog)));
+                    eventLogsBuffer.add(newLog);
                 } else {
-                    eventLogsTmp := Array.thaw(Array.append(Array.freeze(eventLogsTmp), Array.make(newLog)));
+                    // eventLogsTmp := Array.thaw(Array.append(Array.freeze(eventLogsTmp), Array.make(newLog)));
+                    eventLogsTmpBuffer.add(newLog);
                 };
                 #ok(indexNonce);
             };
@@ -241,6 +251,7 @@ shared ({caller = owner}) actor class ICES() = this {
     private func moveToStorage() : async Bool {
         switch eventLogStorage {
             case(?storage) {
+                storageArr := storageBuffer.toVarArray();
                 // if current storage has enough space to store
                 let canisterId = Principal.fromActor(storage);
                 let memorySize = await getMemorySize(canisterId);
@@ -256,6 +267,8 @@ shared ({caller = owner}) actor class ICES() = this {
                     };
                     storageArr[storageArr.size()-1] := storageInfo;
                     let newStorage = await createStorage();
+                    // reset
+                    storageArr := [var];
                     return await _moveToStorage(newStorage);
                 };
                 return await _moveToStorage(storage);
@@ -268,19 +281,28 @@ shared ({caller = owner}) actor class ICES() = this {
     };
 
     private func _moveToStorage(storage : EventLogStorageActor) : async Bool {
-        for(i in Iter.range(0, autoNumber-1)) {
-            let log = eventLogs[i];
-            let result = await storage.addEventLog(log);
+        // use buffer 
+        for (v in eventLogsBuffer.vals()) {
+            let result = await storage.addEventLog(v);
         };
-        eventLogs := [var];
-        eventLogs := Array.thaw(Array.append(Array.freeze(eventLogs), Array.freeze(eventLogsTmp)));
-        eventLogsTmp := [var];
+
+        // for(i in Iter.range(0, autoNumber-1)) {
+        //     let log = eventLogs[i];
+        //     let result = await storage.addEventLog(log);
+        // };
+    
+        // eventLogs := [var];
+        // eventLogs := Array.thaw(Array.append(Array.freeze(eventLogs), Array.freeze(eventLogsTmp)));
+        // eventLogsTmp := [var];
+        eventLogsBuffer.clear();
+        eventLogsBuffer.append(eventLogsTmpBuffer);
+        eventLogsTmpBuffer.clear();
         moveFlag := false;
         true;
     };
 
     public query func getLogSize() : async [Nat] {
-        [eventLogs.size(), eventLogsTmp.size()];
+        [eventLogsBuffer.size(), eventLogsTmpBuffer.size()];
     };
 
     public func getStorageMemorySize(canisterId: Principal) : async Nat {
@@ -312,7 +334,8 @@ shared ({caller = owner}) actor class ICES() = this {
         };
         if (start >= arrFirstIndex) {
             // get from current eventlog arr
-            return EventUtil.getPage(Array.freeze(eventLogs), start, pageSize);
+            // eventLogs := eventLogsBuffer.toArray();
+            return EventUtil.getPage(eventLogsBuffer.toArray(), start, pageSize);
         } else {
             // get from storage
             let r = await _getStorageLogs(start, pageSize);
