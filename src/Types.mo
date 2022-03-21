@@ -11,10 +11,10 @@ module {
         storageStatus    : Bool; 
     };
 
-    public type Transfer = {
-        from : Principal;
-        to: Principal;
-        amount: Nat64;
+    public type Transaction = {
+        from : Text;
+        to: Text;
+        amount: Nat;
     };
 
     public type EventValue = {
@@ -27,7 +27,7 @@ module {
         #False;
         #Float : Float;
         #Principal : Principal;
-        #Transfer : Transfer;
+        #Transaction : Transaction;
     };
 
     public type Indexed = {
@@ -42,11 +42,6 @@ module {
         caller : Principal;
     };
 
-    public type EventType = {
-        key : Text;
-        values : [(Text, EventValue, Indexed)];
-        caller : Principal;
-    };
 
     public type EventLog = {
         index          : Nat;
@@ -54,17 +49,9 @@ module {
         nonce          : Nat;
         canisterId     : Principal;
         event          : Event; 
-        icesTime       : Time.Time;
+        canisterTime   : Time.Time;
     };
 
-    // public type EventLog = {
-    //     index           : Nat;
-    //     projectId      : ?Text;
-    //     caller          : Text; 
-    //     eventKey       : Text; 
-    //     eventValue     : [Text]; 
-    //     timestamp      : Time.Time;
-    // };
 
     public type  Project = {
         canisterId     : Principal;

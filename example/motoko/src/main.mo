@@ -4,12 +4,16 @@ import Text "mo:base/Text";
 import Option "mo:base/Option";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
+import Time "mo:base/Time";
 
 import ICES "mo:ices/ICES";
 import Router "mo:ices/Router";
 
+
 shared actor class ICESExample(overrideId: ?Text) = Self  {
     
+    type Event = Router.Event;
+    type Transaction = Router.Transaction;
     
     let routerId = Option.get(overrideId, Router.mainnetId);
 
@@ -32,9 +36,14 @@ shared actor class ICESExample(overrideId: ?Text) = Self  {
     public shared({caller}) func login(param1: Text, param2: Text) : async Bool {
         // TODO Your business
 
-        // let eventKey = "CES_USER";
-        let eventValue = [param1, param2];
-        let result = await ices.login(eventValue);
+        let event : Event = {
+            key = "Login";
+            values = [("subKey", #Text "user login in",#Indexed)];
+            caller = caller;
+            time = Time.now();
+        };
+
+        let result = await ices.emit(event);
         switch result {
             case(#ok(index)) Debug.print("emit success");
             case(#err(errmsg)) Debug.print("emit fail: " # errmsg);
@@ -44,12 +53,23 @@ shared actor class ICESExample(overrideId: ?Text) = Self  {
 
 
     // Event log example
-    public shared({caller}) func eventLogExample(param1: Text, param2: Text) : async Bool {
+    public shared({caller}) func transfer(from: Principal, to: Principal, amount : Nat) : async Bool {
         // TODO Your business
 
-        let eventKey = "your key";
-        let eventValue = [param1, param2];
-        let result = await ices.emit(eventKey, eventValue);
+        let transaction : Transaction = {
+            from = Principal.toText(from);
+            to = Principal.toText(to);
+            amount = amount;
+        };
+        
+        let event : Event = {
+            key = "Transaction";
+            values = [("subKey", #Transaction transaction,#Indexed)];
+            caller = caller;
+            time = Time.now();
+        };
+        
+        let result = await ices.emit(event);
         switch result {
             case(#ok(index)) Debug.print("emit success");
             case(#err(errmsg)) Debug.print("emit fail: " # errmsg);

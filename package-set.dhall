@@ -12,7 +12,7 @@ let
             },
             { name = "ices"
             , repo = "https://github.com/icpfans-xyz/ices-motoko-library"
-            , version = "v0.1.0"
+            , version = "v0.2.0"
             , dependencies = [] : List Text
             }
       ] : List Package

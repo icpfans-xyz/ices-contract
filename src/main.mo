@@ -260,7 +260,7 @@ shared ({caller = owner}) actor class ICES() = this {
                     nonce       = nonce;
                     canisterId  = caller;
                     event       = event;
-                    icesTime  = Time.now();
+                    canisterTime  = Time.now();
                 };
                 if (moveFlag == false) {
                     // eventLogs := Array.thaw(Array.append(Array.freeze(eventLogs), Array.make(newLog)));
