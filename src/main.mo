@@ -64,7 +64,9 @@ shared ({caller = owner}) actor class ICES() = this {
     private let MSG_RECORD_EXCEEDS = "The number of records requested by the canister exceeds the limit";
     // add other admins 
     private stable var admins = [owner];
+    private let adminsBuffer = Buffer.Buffer<Principal>(0);
 
+    adminsBuffer.add(owner);
 
 
 
@@ -85,9 +87,21 @@ shared ({caller = owner}) actor class ICES() = this {
 
     // Adds a new principal as an admin.
     // @auth: owner
-    public shared({caller}) func addAdmin(p : Principal) : async () {
+    public shared({caller}) func addAdmin(p : Principal) : async Bool {
         assert(caller == owner);
-        admins := Array.append(admins, [p]);
+        // admins := Array.append(admins, [p]);
+        adminsBuffer.clear();
+        for (a in admins.vals()) {
+            if (a == p) { 
+                return true;
+             };
+            adminsBuffer.add(a);
+        };
+        // add new 
+        adminsBuffer.add(p);
+        // override
+        admins := adminsBuffer.toArray();
+        return true;
     };
 
     // Removes the given principal from the list of admins.
