@@ -46,11 +46,11 @@ echo Register Motoko Project = $( \
 
 echo emit motoko example login
 
-eval dfx canister  call  $MOTOKO_ID login "'(\"param1_motoko_login\", \"param1_motoko_login\")'"
+eval dfx canister  call  $MOTOKO_ID login 
 
 echo emit motoko example eventLogExample 
 
-eval dfx canister  call  $MOTOKO_ID eventLogExample "'(\"param1_motoko\", \"param1_motoko\")'"
+eval dfx canister  call  $MOTOKO_ID transfer "'(principal \"rrkah-fqaaa-aaaaa-aaaaq-cai\", principal \"ryjl3-tyaaa-aaaaa-aaaba-cai\", 10000:nat)'"
 
 
 echo -----example rust test------
@@ -59,13 +59,13 @@ echo  setting rust  ices canister = $( \
         eval dfx canister  call  $RUST_ID set_ces_canister "'(\"$ICES\")'"
 )
 
-echo Register Rust Project = $( \
-    eval dfx canister call $RUST_ID register
-)
+# echo Register Rust Project = $( \
+#     eval dfx canister call $RUST_ID register
+# )
 
-echo emit rust example login
+# echo emit rust example login
 
-eval dfx canister  call  $RUST_ID login "'(\"rust_rust_login\")'"
+# eval dfx canister  call  $RUST_ID login "'(\"rust_rust_login\")'"
 
 echo -----ICES Query-----
 

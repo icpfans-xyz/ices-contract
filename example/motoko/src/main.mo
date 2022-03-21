@@ -33,7 +33,7 @@ shared actor class ICESExample(overrideId: ?Text) = Self  {
     };
 
     // User data example
-    public shared({caller}) func login(param1: Text, param2: Text) : async Bool {
+    public shared({caller}) func login() : async Bool {
         // TODO Your business
 
         let event : Event = {
