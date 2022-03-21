@@ -269,7 +269,6 @@ shared ({caller = owner}) actor class ICES() = this {
                     // eventLogsTmp := Array.thaw(Array.append(Array.freeze(eventLogsTmp), Array.make(newLog)));
                     eventLogsTmpBuffer.add(newLog);
                 };
-                // save project index
                 let mr = _modifyProjectNonce(project, nonce);
                 #ok(indexNonce);
             };
@@ -279,6 +278,7 @@ shared ({caller = owner}) actor class ICES() = this {
         };
     };
 
+    // save project nonce
     private func _modifyProjectNonce(p : Project, nonce : Nat) : Bool {
         let newProject : Project = {
             canisterId = p.canisterId;
