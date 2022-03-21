@@ -37,15 +37,8 @@ shared ({caller = owner}) actor class EventStorage(_owner: Principal) = this {
 
 
     public shared({caller}) func addEventLog(item : EventLog) : async Bool {
-        let newLog : EventLog = {
-            index       = item.index;
-            projectId   = item.projectId;
-            caller      = item.caller;
-            eventKey    = item.eventKey;
-            eventValue  = item.eventValue;
-            timestamp  = item.timestamp;
-        };
-        eventLogsBuffer.add(newLog);
+        
+        eventLogsBuffer.add(item);
         // eventLogs := Array.thaw(Array.append(Array.freeze(eventLogs), Array.make(newLog)));
         return true;
     };

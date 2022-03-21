@@ -16,7 +16,7 @@ import Buffer "mo:base/Buffer";
 
 shared ({caller = owner}) actor class ICES() = this {
     
-
+    type Event = Type.Event;
     type EventLog = Type.EventLog;
     type StorageInfo = Type.StorageInfo;
     type Project = Type.Project;
@@ -41,6 +41,10 @@ shared ({caller = owner}) actor class ICES() = this {
     private stable var eventLogs : [var EventLog] = [var];
     // eventlog buffer
     private let eventLogsBuffer = Buffer.Buffer<EventLog>(0);
+
+    // 
+    private let eventBuffer = Buffer.Buffer<Event>(0);
+
     private stable var eventLogsTmp : [var EventLog] = [var];
     // tmp buffer
     private let eventLogsTmpBuffer = Buffer.Buffer<EventLog>(0);
@@ -75,6 +79,11 @@ shared ({caller = owner}) actor class ICES() = this {
             if (a == p) { return true; };
         };
         false;
+    };
+
+    public shared({caller}) func testEvent(event : Event) : async [Event] {
+        eventBuffer.add(event);
+        eventBuffer.toArray();
     };
 
 
@@ -194,8 +203,10 @@ shared ({caller = owner}) actor class ICES() = this {
             switch (registerMap.get(v)) {
                 case (?project) {
                     let newProject : Project = {
+                        canisterId = project.canisterId;
                         projectId = project.projectId;
                         currentNum = project.currentNum;
+                        nonce = project.nonce;
                         approve = true;
                     };
                     registerMap.put(v, newProject);
@@ -214,7 +225,9 @@ shared ({caller = owner}) actor class ICES() = this {
             };
             case(_) {
                 let project : Project = {
+                    canisterId = caller;
                     projectId = null;
+                    nonce = 0;
                     currentNum = 0;
                     approve = false;
                 };
@@ -226,7 +239,7 @@ shared ({caller = owner}) actor class ICES() = this {
     };
 
     // record event log
-    public shared({caller}) func  emit(eventKey: Text, eventValue: [Text]) : async Result.Result<Nat, Text>{
+    public shared({caller}) func  emit(event : Event) : async Result.Result<Nat, Text>{
         switch (registerMap.get(caller)) {
             case(?project) {
                 if (project.approve == false) {
@@ -235,17 +248,19 @@ shared ({caller = owner}) actor class ICES() = this {
                     };
                 };
                 indexNonce := indexNonce + 1;
+                let nonce = project.nonce + 1;
                 if (moveFlag == false and eventLogs.size() >= autoNumber) {
                     moveFlag := true;
                     let r = await moveToStorage();
                 };
+                // event value to json
                 let newLog : EventLog = {
                     index       = indexNonce;
-                    projectId   = project.projectId;
-                    caller      = Principal.toText(caller);
-                    eventKey    = eventKey;
-                    eventValue  = eventValue;
-                    timestamp  = Time.now();
+                    block       = indexNonce;
+                    nonce       = nonce;
+                    canisterId  = caller;
+                    event       = event;
+                    icesTime  = Time.now();
                 };
                 if (moveFlag == false) {
                     // eventLogs := Array.thaw(Array.append(Array.freeze(eventLogs), Array.make(newLog)));
@@ -254,12 +269,26 @@ shared ({caller = owner}) actor class ICES() = this {
                     // eventLogsTmp := Array.thaw(Array.append(Array.freeze(eventLogsTmp), Array.make(newLog)));
                     eventLogsTmpBuffer.add(newLog);
                 };
+                // save project index
+                let mr = _modifyProjectNonce(project, nonce);
                 #ok(indexNonce);
             };
             case(_){
                 #err(MSG_NOT_REGISTER);
             };
         };
+    };
+
+    private func _modifyProjectNonce(p : Project, nonce : Nat) : Bool {
+        let newProject : Project = {
+            canisterId = p.canisterId;
+            projectId = p.projectId;
+            currentNum = p.currentNum;
+            nonce = nonce;
+            approve = p.approve;
+        };
+        registerMap.put(p.canisterId, newProject);
+        return true;
     };
 
     private func moveToStorage() : async Bool {
