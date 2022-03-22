@@ -9,9 +9,9 @@
       "type": "motoko"
     },
     "ices-example-rs": {
-      "build": "cargo build --target wasm32-unknown-unknown --manifest-path example/rust/Cargo.toml --package ces-example-rs --release",
-      "candid": "example/rust/ces-example-rs.did",
-      "wasm": "example/rust/target/wasm32-unknown-unknown/release/ces_example_rs.wasm",
+      "build": "cargo build --target wasm32-unknown-unknown --manifest-path example/rust/sdk_example/Cargo.toml --package ices-example-rs --release",
+      "candid": "example/rust/sdk_example/ices-example-rs.did",
+      "wasm": "example/rust/target/wasm32-unknown-unknown/release/ices_example_rs.wasm",
       "type": "custom"
     }
   },

@@ -1,9 +1,9 @@
 {
   "canisters": {
     "ces-example-rs": {
-      "build": "cargo build --target wasm32-unknown-unknown --package ces-example-rs --release",
-      "candid": "./ces-example-rs.did",
-      "wasm": "target/wasm32-unknown-unknown/release/ces_example_rs.wasm",
+      "build": "cargo build --target wasm32-unknown-unknown --manifest-path sdk_example/Cargo.toml --package ices-example-rs --release",
+      "candid": "./sdk_example/ices-example-rs.did",
+      "wasm": "target/wasm32-unknown-unknown/release/ices_example_rs.wasm",
       "type": "custom"
     }
    },
