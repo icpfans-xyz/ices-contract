@@ -1,23 +1,28 @@
 
-# ICES
+## What is ICES
 
-ICES (Internet Computer Event System) is a canister custom event log storage and analysis service on Dfinity.Provide and implement automatic expansion solutions for large amounts of data storage.
+**ICES (Internet Computer Event System)** is a canister custom event log storage and analysis service on Dfinity. Any canister can access ICES without permission, store the interactive data permanently, and query it through the public API and dashboard provided by ICES.
+
+
+
+## 🔗 Links
+
+* Website **[https://ices.one/](https://ices.one/)**
+* Twitter **[https://twitter.com/icesHQ](https://twitter.com/icesHQ)**
+* Code **[https://github.com/icpfans-xyz/ices](https://github.com/icpfans-xyz/ices)**
+
 
 # Concept
 * Proxy Canister: Log data write and query entry. dispatch log data to stroage canister
 * Storage Canister: Canister for storing data
 
+
+
 ![ices](./ices.png)
 
-# Features and Roadmap
-- [x] Storage Canister automatic expansion of storage
-- [x] Proxy Canister dispatch log data to stroage canister
-- [ ] Proxy Canister adds a queue mechanism to ensure data is stored in storage
-- [ ] Proxy Canister stores data to achieve automatic expansion
-- [ ] Provides motoko and rust sdk
 
 
-# Running the project locally
+# Local run
 
 If you want to test your project locally, you can use the following commands:
 
@@ -36,3 +41,9 @@ dfx deploy
 ./test.sh
 
 ```
+
+## 🔗 Links
+
+* Website **[https://ices.one/](https://ices.one/)**
+* Twitter **[https://twitter.com/icesHQ](https://twitter.com/icesHQ)**
+* Code **[https://github.com/icpfans-xyz/ices](https://github.com/icpfans-xyz/ices)**
