@@ -81,12 +81,6 @@ shared ({caller = owner}) actor class ICES() = this {
         false;
     };
 
-    public shared({caller}) func testEvent(event : Event) : async [Event] {
-        eventBuffer.add(event);
-        eventBuffer.toArray();
-    };
-
-
     // Set auto-scaling number
     public shared({caller}) func setAutoNumber(num : Nat) : async Bool {
         assert(_isAdmin(caller));
