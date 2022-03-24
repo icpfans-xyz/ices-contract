@@ -9,7 +9,7 @@
 
 * Website **[https://ices.one/](https://ices.one/)**
 * Twitter **[https://twitter.com/icesHQ](https://twitter.com/icesHQ)**
-* Code **[https://github.com/icpfans-xyz/ices](https://github.com/icpfans-xyz/ices)**
+* Code **[https://github.com/icpfans-xyz/ices-contract](https://github.com/icpfans-xyz/ices-contract)**
 
 
 # Concept
@@ -42,8 +42,3 @@ dfx deploy
 
 ```
 
-## 🔗 Links
-
-* Website **[https://ices.one/](https://ices.one/)**
-* Twitter **[https://twitter.com/icesHQ](https://twitter.com/icesHQ)**
-* Code **[https://github.com/icpfans-xyz/ices](https://github.com/icpfans-xyz/ices)**
