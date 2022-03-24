@@ -5,12 +5,6 @@
 
 
 
-## 🔗 Links
-
-* Website **[https://ices.one/](https://ices.one/)**
-* Twitter **[https://twitter.com/icesHQ](https://twitter.com/icesHQ)**
-* Code **[https://github.com/icpfans-xyz/ices-contract](https://github.com/icpfans-xyz/ices-contract)**
-
 
 # Concept
 * Proxy Canister: Log data write and query entry. dispatch log data to stroage canister
@@ -41,4 +35,10 @@ dfx deploy
 ./test.sh
 
 ```
+
+## 🔗 Links
+
+* Website **[https://ices.one/](https://ices.one/)**
+* Twitter **[https://twitter.com/icesHQ](https://twitter.com/icesHQ)**
+* Code **[https://github.com/icpfans-xyz/ices-contract](https://github.com/icpfans-xyz/ices-contract)**
 
