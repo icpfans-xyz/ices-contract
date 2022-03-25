@@ -36,6 +36,10 @@ dfx deploy
 
 ```
 
+# IC Mainnet demo
+* Demo https://opxi6-diaaa-aaaah-abhrq-cai.raw.ic0.app
+* Explorer [https://explorer.ices.one](https://explorer.ices.one)
+
 ## 🔗 Links
 
 * Website **[https://ices.one/](https://ices.one/)**
