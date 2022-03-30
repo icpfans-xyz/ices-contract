@@ -19,4 +19,3 @@ canister_ids.json
 
 # rust code
 target/
-icp123_rs/target/

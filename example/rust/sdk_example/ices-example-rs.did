@@ -1,5 +1,7 @@
 service : {
-     "login": (event_key : text) -> ();
+     "login": (event_key : text) -> (bool);
+     "register": () -> (bool);
+     "transfer": (principal, principal, nat) -> (bool);
      "set_ces_canister": (canister_id : text) -> ();
      "get_ces_canister": () -> (text);
 }
