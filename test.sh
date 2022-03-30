@@ -48,7 +48,7 @@ echo emit motoko example login
 
 eval dfx canister  call  $MOTOKO_ID login 
 
-echo emit motoko example eventLogExample 
+echo emit motoko example transfer 
 
 eval dfx canister  call  $MOTOKO_ID transfer "'(principal \"rrkah-fqaaa-aaaaa-aaaaq-cai\", principal \"ryjl3-tyaaa-aaaaa-aaaba-cai\", 10000:nat)'"
 
@@ -59,13 +59,18 @@ echo  setting rust  ices canister = $( \
         eval dfx canister  call  $RUST_ID set_ces_canister "'(\"$ICES\")'"
 )
 
-# echo Register Rust Project = $( \
-#     eval dfx canister call $RUST_ID register
-# )
+echo Register Rust Project = $( \
+    eval dfx canister call $RUST_ID register
+)
 
-# echo emit rust example login
+echo emit rust sdk example login
 
-# eval dfx canister  call  $RUST_ID login "'(\"rust_rust_login\")'"
+eval dfx canister  call  $RUST_ID login 
+
+echo emit rust sdk example transfer 
+
+eval dfx canister  call  $RUST_ID transfer "'(principal \"rrkah-fqaaa-aaaaa-aaaaq-cai\", principal \"ryjl3-tyaaa-aaaaa-aaaba-cai\", 10000:nat)'"
+
 
 echo -----ICES Query-----
 

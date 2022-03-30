@@ -29,7 +29,8 @@ pub async fn register() -> bool{
 
 }
 
-#[update]
+#[update(name = "login")]
+#[candid_method(update)]
 async fn login(event_key: String) -> bool {
     ic_cdk::println!("eventkey:{}", &event_key);
     let event_value  = EventValue::Text("hello ices!".to_owned());
@@ -68,7 +69,8 @@ async fn login(event_key: String) -> bool {
     }
 }
 
-#[update]
+#[update(name = "tranfer")]
+#[candid_method(update)]
 async fn tranfer(from: Principal, to: Principal, amount: Nat) -> bool {
     ic_cdk::println!("eventkey:{}", "tranfer".to_string());
     // let from_str = from.to_string();
