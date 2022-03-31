@@ -1,6 +1,6 @@
-use candid::{CandidType, Deserialize, Nat,Principal};
+use candid::{CandidType, Deserialize, Nat,Principal, Int};
 use serde::Serialize;
-use std::time::{SystemTime, UNIX_EPOCH};
+use ic_cdk::api::time;
 
 #[derive(CandidType,Deserialize, Clone, Debug)]
 pub struct Transaction  {
@@ -9,11 +9,10 @@ pub struct Transaction  {
     pub amount: Nat,
 }
 
-
 #[derive(CandidType, Deserialize, Clone, Debug)]
 pub struct Event {
-    /// The timestamp in ms.
-    pub time: i64,
+    /// The timestamp 
+    pub time: Int,
     /// The caller that initiated the call on the token contract.
     pub caller: Principal,
     /// The key that took place.
@@ -55,6 +54,13 @@ pub enum EventValue {
     Transaction(Transaction),
 }
 
+#[derive(CandidType, Deserialize, Clone, Debug)]
+pub enum EmitResult<T> {
+    ok(T),
+    err(String),
+}
+
+
 impl EventBuilder {
     pub fn new() -> Self {
         Default::default()
@@ -70,7 +76,7 @@ impl EventBuilder {
 
     /// Sets the key of the event.
     #[inline(always)]
-    pub fn key(mut self,key: String) -> Self {
+    pub fn key(mut self, key: String) -> Self {
         self.key = Some(key);
 
         self
@@ -92,19 +98,10 @@ impl EventBuilder {
             caller: self.caller.unwrap(),
             key: self.key.unwrap(),
             values: self.values,
-            time: timestamp(),
+            time: Int::from(time()),
         })
     }
-
 }
 
-fn timestamp() -> i64 {
-    let start = SystemTime::now();
-    let since_the_epoch = start
-        .duration_since(UNIX_EPOCH)
-        .expect("Time went backwards");
-    let ms = since_the_epoch.as_secs() as i64 * 1000i64 + (since_the_epoch.subsec_nanos() as f64 / 1_000_000.0) as i64;
-    ms
-}
 
 
