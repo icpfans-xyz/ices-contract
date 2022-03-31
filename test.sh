@@ -9,10 +9,12 @@
 # dfx start --clean --background --emulator
 dfx build --check
 dfx canister  create --all
-dfx canister  install ices  -m reinstall
+echo yes|dfx canister  install ices  -m reinstall
+
 # dfx canister  install ices-example-motoko -m reinstall 
 # dfx canister  install ices-example-motoko --argument '(opt "rrkah-fqaaa-aaaaa-aaaaq-cai")'
-dfx canister  install ices-example-rs -m reinstall
+echo yes|dfx canister  install ices-example-rs -m reinstall
+
 echo canister installed
 
 dfx identity use default
@@ -24,7 +26,7 @@ echo default principal = $DEFAULT_ID
 ICES=$(dfx canister id ices)
 echo ICES id: $ICES
 
-dfx canister  install ices-example-motoko --argument '(opt "'$ICES'")' -m reinstall
+echo yes|dfx canister  install ices-example-motoko --argument '(opt "'$ICES'")' -m reinstall
 
 MOTOKO_ID=$(dfx canister id ices-example-motoko)
 echo motoko example id: $MOTOKO_ID
@@ -55,9 +57,9 @@ eval dfx canister  call  $MOTOKO_ID transfer "'(principal \"rrkah-fqaaa-aaaaa-aa
 
 echo -----example rust test------
 
-echo  setting rust  ices canister = $( \
-        eval dfx canister  call  $RUST_ID set_ces_canister "'(\"$ICES\")'"
-)
+# echo  setting locally  ices canister id for rust example  = $( \
+#         eval dfx canister  call  $RUST_ID set_ices_canister "'(\"$ICES\")'"
+# )
 
 echo Register Rust Project = $( \
     eval dfx canister call $RUST_ID register
@@ -65,7 +67,7 @@ echo Register Rust Project = $( \
 
 echo emit rust sdk example login
 
-eval dfx canister  call  $RUST_ID login 
+eval dfx canister  call  $RUST_ID login "'(\"login_key\")'"
 
 echo emit rust sdk example transfer 
 
