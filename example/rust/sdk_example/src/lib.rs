@@ -17,7 +17,6 @@ pub async fn register() -> bool{
             .unwrap();
 
         let _call_result = ices_sdk::register(ices_builder).await;
-        ic_cdk::println!("demo:{:?}",_call_result);
         match _call_result {
             Ok(r) => {
                 ic_cdk::println!("{:?}",r);
