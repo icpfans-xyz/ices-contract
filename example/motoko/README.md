@@ -1,6 +1,6 @@
 
 # Rust SDK-Getting started
-* [Document](https://doc.ices.one/guide/tutorial-rust)
+* [Document](https://doc.ices.one/guide/tutorial-motoko)
 * Website **[https://ices.one/](https://ices.one/)**
 * ICES's Mainnet canister: * **ydetr-mqaaa-aaaah-aa6lq-cai** *  
 
